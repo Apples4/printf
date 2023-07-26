@@ -58,6 +58,8 @@ int _printf(const char *format, ...)
 	func_t funcs[] = {
 		{"c", ch_},
 		{"s", str_},
+		{"d", int_},
+		{"i", int_},
 		{NULL, NULL}
 	};
 

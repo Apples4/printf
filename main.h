@@ -13,6 +13,7 @@ typedef struct func
 	char *type;
 	int (*fp)();
 }func_t;
+int int_(va_list int_i_d);
 int str_(va_list string);
 int ch_(va_list character);
 int _printf(const char *format, ...);
