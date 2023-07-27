@@ -1,71 +1,50 @@
 #include "main.h"
-#include <stdarg.h>
-#include <stdio.h>
 
 /**
- * print_ - function to check which specifier to print
- * @format: string being passed
- * @ary: array of struct containing format options
- * @args: list of arguments to print
- * Return: number of characters to be printed
+ * _printf - prints formatted data to stdout
+ * @format: string that contains the format to print
+ * Return: number of characters written
  */
-int print_(const char *format, func_t *ary, va_list args)
+int _printf(char *format, ...)
 {
-	char x;
-	int i = 0, k = 0, l = 0;
-
-	x = format[i];
-	while (x != '\0')
-	{
-		if (x == '%')
-		{
-			i++;
-			l = 0;
-
-			x = format[i];
-
-			while (ary[l].type != NULL && x != *(ary[l].type))
-				l++;
-			if (ary[l].type != NULL)
-				k += ary[l].fp(args);
-			else
-			{
-				if (x == '\0')
-					return (0);
-				if (x != '%')
-					k += _putchar('%');
-				k += _putchar(x);
-			}
-		}
-		else
-			k += _putchar(x);
-
-		i++;
-		x = format[i];
-	}
-	return (k);
-}
-/**
- * _printf - print the output
- * @format: input of various elements
- * Return: a character is printed out
- */
-int _printf(const char *format, ...)
-{
-	va_list args;
-	int i;
-
-	func_t funcs[] = {
-		{"c", ch_},
-		{"s", str_},
-		{"d", int_},
-		{"i", int_},
-		{NULL, NULL}
-	};
+	int written = 0, (*structype)(char *, va_list);
+	char q[3];
+	va_list pa;
 
 	if (format == NULL)
-		return (0);
-	va_start(args, format);
-	i = print_(format, funcs, args);
-	return (i);
+		return (-1);
+	q[2] = '\0';
+	va_start(pa, format);
+	_putchar(-1);
+	while (format[0])
+	{
+		if (format[0] == '%')
+		{
+			structype = driver(format);
+			if (structype)
+			{
+				q[0] = '%';
+				q[1] = format[1];
+				written += structype(q, pa);
+			}
+			else if (format[1] != '\0')
+			{
+				written += _putchar('%');
+				written += _putchar(format[1]);
+			}
+			else
+			{
+				written += _putchar('%');
+				break;
+			}
+			format += 2;
+		}
+		else
+		{
+			written += _putchar(format[0]);
+			format++;
+		}
+	}
+	_putchar(-2);
+	return (written);
 }

@@ -1,22 +1,19 @@
 #include "main.h"
 
 /**
- * str_ - function to print string
- * @string: input of a string
- * Return: number of elements in string
+ * printstr- print str.
+ * @pa: gtgtg
+ * @format: format str.
+ * Return: number str for print.
  */
-int str_(va_list string)
+int printstr(char *format, va_list pa)
 {
-	int i;
-	char *stri;
+	char *string = va_arg(pa, char *);
+	int contador;
+	(void)format;
 
-	stri = va_arg(string, char *);
-
-	if (stri == NULL)
-		stri = "NULL";
-
-	i = 0;
-	while (stri[i] != '\0')
-		i += _putchar(stri[i]);
-	return (i);
+	if (string == NULL)
+		string = "(null)";
+	contador = _puts(string);
+	return (contador);
 }
